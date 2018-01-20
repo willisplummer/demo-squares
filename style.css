@@ -42,6 +42,7 @@ body {
   height: 80%;
   width: 20%;
   background-color: teal;
+  border-radius: 10px;
   -webkit-transition: all 1s; /* Safari */
   transition: all 1s;
 }
