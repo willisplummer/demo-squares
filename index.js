@@ -3,6 +3,7 @@ import Rx from 'rxjs/Rx'
 const SQUARE_COUNT = 50
 
 // Add more Squares as necessary
+
 const squares = document.getElementById("squares")
 const addRow = (parent, rowCount) => {
   const row = document.createElement("div")

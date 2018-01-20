@@ -50,6 +50,7 @@ body {
 #squares .row .square:hover {
   width: 230px;
   height: 230px;
+  border-radius: 120px;
 }
 
 header {
