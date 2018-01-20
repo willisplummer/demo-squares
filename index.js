@@ -1,10 +1,44 @@
 import Rx from 'rxjs/Rx'
 
-const SQUARE_IDS = ["square-1", "square-2", "square-3", "square-4", "square-5", "square-6", "square-7", "square-8", "square-9", "square-10", "square-11", "square-12"]
+const SQUARE_COUNT = 50
+
+// Add more Squares as necessary
+const squares = document.getElementById("squares")
+const addRow = (parent, rowCount) => {
+  const row = document.createElement("div")
+  row.setAttribute("class", "row")
+
+  const testSquare = document.createElement("div")
+  testSquare.setAttribute("class", "square")
+
+  Array(5).fill(undefined).forEach((_, i) => {
+    const newSquare = testSquare.cloneNode()
+    const idNumber = (rowCount-1)*5+i+1
+    newSquare.setAttribute("id", `square-${idNumber}`)
+    row.appendChild(newSquare)
+  })
+  parent.appendChild(row)
+}
+
+const addRows = (parent, rowsToAdd) => {
+  let rowCount = 3
+  Array(rowsToAdd).fill(undefined).forEach(() => {
+    rowCount++
+    addRow(parent, rowCount)
+  })
+}
+
+const rowsToAdd = SQUARE_COUNT/5 - 3
+addRows(squares, rowsToAdd)
+
+// Random Colors
+
+const squareIds = Array(SQUARE_COUNT).fill(undefined)
+  .map((_, i) => `square-${i + 1}`)
 
 const COLORS = ["teal", "red", "green", "blue", "orange", "yellow"]
 
-const squareMouseOver$ = SQUARE_IDS.map(id =>
+const squareMouseOver$ = squareIds.map(id =>
   Rx.Observable.fromEvent(document.getElementById(`${id}`), 'mouseover')
     .map(e => id)
 )
