@@ -2,5 +2,7 @@
 
 ## To Run
 
-run `> yarn` to install all dependencies, then `> yarn start` to run locally
-
+```
+> yarn
+> yarn start
+```
