@@ -9,8 +9,8 @@ const navButtonClick$ = PAGE_IDS.map(id =>
 
 const mergedNavClicks$ = Rx.Observable.merge(...navButtonClick$)
 
-const setUrl = id => {
-  window.location.href = id === 'home' ? '' : `/#${id}`
+const setHash = id => {
+  window.location.hash = id
 }
 
 const displayContent = hash => {
@@ -21,13 +21,9 @@ const displayContent = hash => {
     .forEach(i => document.getElementById(i).classList.add('hide'))
 }
 
-const setUrlAndDisplayContent = id => {
-  setUrl(id);
-  // displayContent(id);
-}
-
-mergedNavClicks$.subscribe(setUrlAndDisplayContent)
+mergedNavClicks$.subscribe(setHash)
 
 const hashChanges$ = Rx.Observable.fromEvent(window, 'hashchange')
   .startWith(1);
+
 hashChanges$.subscribe(() => displayContent(window.location.hash))
