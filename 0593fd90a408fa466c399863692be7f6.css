@@ -89,6 +89,10 @@ footer {
   bottom: 0;
 }
 
+#home {
+  overflow: hidden;
+}
+
 /* HOME */
 
 #home .row {
