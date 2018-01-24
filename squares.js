@@ -46,15 +46,26 @@ const squareMouseOver$ = squareIds.map(id =>
 
 const mergedSquare$ = Rx.Observable.merge(...squareMouseOver$)
 
+const rgbToHex = (rgb) => {
+  if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
+
+  rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+  function hex(x) {
+      return ("0" + parseInt(x).toString(16)).slice(-2);
+  }
+  return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+
 const setBackgroundColor = id => {
   const el = document.getElementById(id)
-  const backgroundColor = el.style.backgroundColor || COLORS[0]
+  const backgroundColor = rgbToHex(el.style.backgroundColor || COLORS[0])
   const otherColors = COLORS.filter(c => c !== backgroundColor)
   
   // side-effect: ideally would inject the seed to keep this function pure
   const newColor = otherColors[Math.floor(Math.random()*otherColors.length)]
 
-  el.setAttribute("style", `background-color: ${newColor};`)
+  el.style.backgroundColor = newColor;
 }
 
 mergedSquare$.subscribe(setBackgroundColor)
