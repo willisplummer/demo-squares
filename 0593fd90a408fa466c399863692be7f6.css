@@ -82,7 +82,7 @@ footer {
 
 
 #home, #about, #signup {
-  position: absolute;
+  position: fixed;
   top: 50;
   left: 0;
   right: 0;
@@ -90,6 +90,7 @@ footer {
 }
 
 #home {
+  height: 100%;
   overflow: hidden;
 }
 
