@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx'
+import {forEach, fromEvent, map, filter, pipe} from 'callbag-basics';
 
 const COLORS = ['#a8e6cf', '#dcedc1', '#ffd3b6', '#ffaaa5', '#ff8b94']
 const SQUARE_COUNT = 50
@@ -38,14 +38,6 @@ addRows(squares, rowsToAdd)
 const squareIds = Array(SQUARE_COUNT).fill(undefined)
   .map((_, i) => `square-${i + 1}`)
 
-
-const squareMouseOver$ = squareIds.map(id =>
-  Rx.Observable.fromEvent(document.getElementById(`${id}`), 'mouseover')
-    .map(e => id)
-)
-
-const mergedSquare$ = Rx.Observable.merge(...squareMouseOver$)
-
 const rgbToHex = (rgb) => {
   if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
 
@@ -57,15 +49,20 @@ const rgbToHex = (rgb) => {
 }
 
 
-const setBackgroundColor = id => {
+const setBackgroundColor = (id, random = Math.random()) => {
   const el = document.getElementById(id)
   const backgroundColor = rgbToHex(el.style.backgroundColor || COLORS[0])
   const otherColors = COLORS.filter(c => c !== backgroundColor)
   
-  // side-effect: ideally would inject the seed to keep this function pure
-  const newColor = otherColors[Math.floor(Math.random()*otherColors.length)]
+  const newColor = otherColors[Math.floor(random * otherColors.length)]
 
   el.style.backgroundColor = newColor;
 }
 
-mergedSquare$.subscribe(setBackgroundColor)
+pipe(
+  fromEvent(document, 'mouseover'),
+  filter(ev => squareIds.includes(ev.target.id)),
+  map(ev => ev.target.id),
+  forEach(setBackgroundColor)
+)
+

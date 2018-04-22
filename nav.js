@@ -1,13 +1,7 @@
-import Rx from 'rxjs/Rx'
+import {forEach, fromEvent, map, filter, pipe} from 'callbag-basics';
 
 const PAGE_IDS = ['home', 'about', 'signup']
-
-const navButtonClick$ = PAGE_IDS.map(id =>
-  Rx.Observable.fromEvent(document.getElementById(`${id}-bttn`), 'click')
-    .map(e => id)
-)
-
-const mergedNavClicks$ = Rx.Observable.merge(...navButtonClick$)
+const pageButtonClasses = PAGE_IDS.map(id => `${id}-bttn`)
 
 const setHash = id => {
   window.location.hash = id
@@ -21,9 +15,14 @@ const displayContent = hash => {
     .forEach(i => document.getElementById(i).classList.add('hide'))
 }
 
-mergedNavClicks$.subscribe(setHash)
+pipe(
+  fromEvent(document, 'click'),
+  filter(ev => pageButtonClasses.includes(ev.target.id)),
+  map(ev => ev.target.id.split('-')[0]),
+  forEach(setHash)
+)
 
-const hashChanges$ = Rx.Observable.fromEvent(window, 'hashchange')
-  .startWith(1);
-
-hashChanges$.subscribe(() => displayContent(window.location.hash))
+pipe(
+  fromEvent(window, 'hashchange'),
+  forEach(() => displayContent(window.location.hash))
+)

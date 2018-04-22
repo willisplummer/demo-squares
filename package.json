@@ -10,7 +10,8 @@
   "author": "willis plummer <willisplummer@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "rxjs": "^5.5.5"
+    "callbag-basics": "^3.0.0",
+    "parcel-bundler": "^1.7.1"
   },
   "devDependencies": {
     "babel-preset-env": "^1.6.1"
