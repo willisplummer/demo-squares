@@ -4,7 +4,7 @@
   "main": "index.js",
   "repository": "git@github.com:willisplummer/demo-squares.git",
   "scripts": {
-    "start": "NODE_ENV=devlopment parcel index.html",
+    "start": "NODE_ENV=development parcel index.html",
     "build": "NODE_ENV=production parcel build index.html --public-url /demo-squares",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist"
