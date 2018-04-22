@@ -1,4 +1,4 @@
-const {forEach, fromEvent, map, filter, pipe, merge} = require('callbag-basics');
+import {forEach, fromEvent, map, filter, pipe} from 'callbag-basics';
 
 const PAGE_IDS = ['home', 'about', 'signup']
 const pageButtonClasses = PAGE_IDS.map(id => `${id}-bttn`)

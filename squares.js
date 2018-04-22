@@ -1,4 +1,4 @@
-const {forEach, fromEvent, map, filter, pipe, merge} = require('callbag-basics');
+import {forEach, fromEvent, map, filter, pipe} from 'callbag-basics';
 
 const COLORS = ['#a8e6cf', '#dcedc1', '#ffd3b6', '#ffaaa5', '#ff8b94']
 const SQUARE_COUNT = 50
@@ -49,13 +49,12 @@ const rgbToHex = (rgb) => {
 }
 
 
-const setBackgroundColor = id => {
+const setBackgroundColor = (id, random = Math.random()) => {
   const el = document.getElementById(id)
   const backgroundColor = rgbToHex(el.style.backgroundColor || COLORS[0])
   const otherColors = COLORS.filter(c => c !== backgroundColor)
   
-  // side-effect: ideally would inject the seed to keep this function pure
-  const newColor = otherColors[Math.floor(Math.random()*otherColors.length)]
+  const newColor = otherColors[Math.floor(random * otherColors.length)]
 
   el.style.backgroundColor = newColor;
 }
