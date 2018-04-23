@@ -77,7 +77,7 @@ parcelRequire = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({10:[function(require,module,exports) {
+})({11:[function(require,module,exports) {
 /**
  * callbag-for-each
  * ----------------
@@ -128,7 +128,7 @@ const forEach = operation => source => {
 
 module.exports = forEach;
 
-},{}],11:[function(require,module,exports) {
+},{}],13:[function(require,module,exports) {
 /**
  * callbag-from-obs
  * --------------
@@ -221,7 +221,7 @@ const fromIter = iter => (start, sink) => {
 
 module.exports = fromIter;
 
-},{}],13:[function(require,module,exports) {
+},{}],14:[function(require,module,exports) {
 const fromEvent = (node, name) => (start, sink) => {
   if (start !== 0) return;
   const handler = ev => sink(1, ev);
@@ -233,7 +233,7 @@ const fromEvent = (node, name) => (start, sink) => {
 
 module.exports = fromEvent;
 
-},{}],14:[function(require,module,exports) {
+},{}],15:[function(require,module,exports) {
 const fromPromise = promise => (start, sink) => {
   if (start !== 0) return;
   let ended = false;
@@ -254,7 +254,7 @@ const fromPromise = promise => (start, sink) => {
 
 module.exports = fromPromise;
 
-},{}],15:[function(require,module,exports) {
+},{}],16:[function(require,module,exports) {
 const interval = period => (start, sink) => {
   if (start !== 0) return;
   let i = 0;
@@ -268,7 +268,7 @@ const interval = period => (start, sink) => {
 
 module.exports = interval;
 
-},{}],16:[function(require,module,exports) {
+},{}],17:[function(require,module,exports) {
 /**
  * callbag-map
  * -----------
@@ -301,7 +301,7 @@ const map = f => source => (start, sink) => {
 
 module.exports = map;
 
-},{}],17:[function(require,module,exports) {
+},{}],18:[function(require,module,exports) {
 /**
  * callbag-scan
  * ------------
@@ -345,7 +345,7 @@ function scan(reducer, seed) {
 
 module.exports = scan;
 
-},{}],18:[function(require,module,exports) {
+},{}],19:[function(require,module,exports) {
 const flatten = source => (start, sink) => {
   if (start !== 0) return;
   const exists = x => typeof x !== 'undefined';
@@ -391,7 +391,7 @@ const flatten = source => (start, sink) => {
 
 module.exports = flatten;
 
-},{}],19:[function(require,module,exports) {
+},{}],20:[function(require,module,exports) {
 const take = max => source => (start, sink) => {
   if (start !== 0) return;
   let taken = 0;
@@ -420,7 +420,7 @@ const take = max => source => (start, sink) => {
 
 module.exports = take;
 
-},{}],20:[function(require,module,exports) {
+},{}],21:[function(require,module,exports) {
 const skip = max => source => (start, sink) => {
   if (start !== 0) return;
   let skipped = 0;
@@ -442,7 +442,7 @@ const skip = max => source => (start, sink) => {
 
 module.exports = skip;
 
-},{}],21:[function(require,module,exports) {
+},{}],22:[function(require,module,exports) {
 /**
  * callbag-filter
  * --------------
@@ -482,7 +482,7 @@ const filter = condition => source => (start, sink) => {
 
 module.exports = filter;
 
-},{}],22:[function(require,module,exports) {
+},{}],23:[function(require,module,exports) {
 /**
  * callbag-merge
  * -------------
@@ -538,7 +538,7 @@ function merge(...sources) {
 
 module.exports = merge;
 
-},{}],23:[function(require,module,exports) {
+},{}],24:[function(require,module,exports) {
 /**
  * callbag-concat
  * --------------
@@ -602,7 +602,7 @@ const concat = (...sources) => (start, sink) => {
 
 module.exports = concat;
 
-},{}],24:[function(require,module,exports) {
+},{}],25:[function(require,module,exports) {
 /**
  * callbag-combine
  * ---------------
@@ -677,7 +677,7 @@ const combine = (...sources) => (start, sink) => {
 
 module.exports = combine;
 
-},{}],25:[function(require,module,exports) {
+},{}],27:[function(require,module,exports) {
 const share = source => {
   let sinks = [];
   let sourceTalkback;
@@ -840,7 +840,7 @@ module.exports = {
 };
 
 
-},{"callbag-for-each":10,"callbag-from-obs":11,"callbag-from-iter":12,"callbag-from-event":13,"callbag-from-promise":14,"callbag-interval":15,"callbag-map":16,"callbag-scan":17,"callbag-flatten":18,"callbag-take":19,"callbag-skip":20,"callbag-filter":21,"callbag-merge":22,"callbag-concat":23,"callbag-combine":24,"callbag-share":25,"callbag-pipe":26}],6:[function(require,module,exports) {
+},{"callbag-for-each":11,"callbag-from-obs":13,"callbag-from-iter":12,"callbag-from-event":14,"callbag-from-promise":15,"callbag-interval":16,"callbag-map":17,"callbag-scan":18,"callbag-flatten":19,"callbag-take":20,"callbag-skip":21,"callbag-filter":22,"callbag-merge":23,"callbag-concat":24,"callbag-combine":25,"callbag-share":27,"callbag-pipe":26}],6:[function(require,module,exports) {
 'use strict';
 
 var _callbagBasics = require('callbag-basics');
@@ -913,10 +913,37 @@ var setBackgroundColor = function setBackgroundColor(id) {
 }), (0, _callbagBasics.map)(function (ev) {
   return ev.target.id;
 }), (0, _callbagBasics.forEach)(setBackgroundColor));
-},{"callbag-basics":9}],7:[function(require,module,exports) {
+},{"callbag-basics":9}],55:[function(require,module,exports) {
+
+const startWith = value => inputSource => (start, outputSink) => {
+  if (start !== 0) return;
+  let inputTalkback;
+  inputSource(0, (it,id) => {
+    if (it === 0){
+      inputTalkback = id;
+      outputSink(0, ot => {
+        if (ot === 2) inputTalkback(ot);
+      });
+      outputSink(1, value);
+    } else {
+      outputSink(it, id);
+    }
+    if (it !== 2) inputTalkback(1);
+  });
+};
+
+module.exports = startWith;
+
+},{}],7:[function(require,module,exports) {
 'use strict';
 
 var _callbagBasics = require('callbag-basics');
+
+var _callbagStartWith = require('callbag-start-with');
+
+var _callbagStartWith2 = _interopRequireDefault(_callbagStartWith);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var PAGE_IDS = ['home', 'about', 'signup'];
 var pageButtonClasses = PAGE_IDS.map(function (id) {
@@ -943,14 +970,14 @@ var displayContent = function displayContent(hash) {
   return ev.target.id.split('-')[0];
 }), (0, _callbagBasics.forEach)(setHash));
 
-// we concat a pageload string to the observable so that the correct content
-// is displayed based on the initial url - otherwise all routes would display the homepage.
-var urlEvents = (0, _callbagBasics.concat)((0, _callbagBasics.fromIter)(['pageLoad']), (0, _callbagBasics.fromEvent)(window, 'hashchange'));
-
-(0, _callbagBasics.pipe)(urlEvents, (0, _callbagBasics.forEach)(function () {
-  return displayContent(window.location.hash);
+(0, _callbagBasics.pipe)((0, _callbagBasics.fromEvent)(window, 'hashchange'),
+// we startWith a pageload string so that the correct content is displayed
+// based on the initial window.location.hash
+// otherwise all routes would display the homepage until the hash changed
+(0, _callbagStartWith2.default)('pageLoad'), (0, _callbagBasics.forEach)(function (e) {
+  displayContent(window.location.hash);
 }));
-},{"callbag-basics":9}],4:[function(require,module,exports) {
+},{"callbag-basics":9,"callbag-start-with":55}],4:[function(require,module,exports) {
 'use strict';
 
 var _squares = require('./squares.js');
@@ -962,7 +989,7 @@ var _nav = require('./nav.js');
 var _nav2 = _interopRequireDefault(_nav);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./squares.js":6,"./nav.js":7}],29:[function(require,module,exports) {
+},{"./squares.js":6,"./nav.js":7}],56:[function(require,module,exports) {
 
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -992,7 +1019,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '61113' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '59060' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -1131,5 +1158,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[29,4])
+},{}]},{},[56,4])
 //# sourceMappingURL=/demo-squares.a67a96da.map
