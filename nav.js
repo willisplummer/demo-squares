@@ -25,9 +25,9 @@ pipe(
 
 pipe(
   fromEvent(window, 'hashchange'),
-  // we startWith a pageload string so that the correct content is displayed
-  // based on the initial window.location.hash
-  // otherwise all routes would display the homepage until the hash changed
-  startWith('pageLoad'),
-  forEach((e) => {displayContent(window.location.hash)})
+  // we startWith an init event so that the correct content is displayed
+  // based on the initial window.location.hash at page load
+  // otherwise all routes would display the homepage until the hash was changed
+  startWith('init'),
+  forEach(() => displayContent(window.location.hash))
 )
