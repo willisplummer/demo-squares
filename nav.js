@@ -1,4 +1,5 @@
 import { forEach, fromEvent, map, filter, pipe, concat, fromIter } from 'callbag-basics';
+import startWith from 'callbag-start-with';
 
 const PAGE_IDS = ['home', 'about', 'signup']
 const pageButtonClasses = PAGE_IDS.map(id => `${id}-bttn`)
@@ -22,11 +23,11 @@ pipe(
   forEach(setHash)
 )
 
-// we concat a pageload string to the observable so that the correct content
-// is displayed based on the initial url - otherwise all routes would display the homepage.
-const urlEvents = concat(fromIter(['pageLoad']), fromEvent(window, 'hashchange'))
-
 pipe(
-  urlEvents,
-  forEach(() => displayContent(window.location.hash))
+  fromEvent(window, 'hashchange'),
+  // we startWith a pageload string so that the correct content is displayed
+  // based on the initial window.location.hash
+  // otherwise all routes would display the homepage until the hash changed
+  startWith('pageLoad'),
+  forEach((e) => {displayContent(window.location.hash)})
 )
